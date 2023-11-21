@@ -1,13 +1,19 @@
 {
   "private": true,
+  "type": "module",
   "name": "server",
   "version": "1.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch index"
   },
   "license": "ISC",
   "dependencies": {
-    "@trpc/client": "^10.43.7",
-    "@trpc/server": "^10.43.7"
+    "@trpc/server": "^10.43.7",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "tsx": "^4.2.0",
+    "typescript": "^5.2.2",
+    "tsconfig": "workspace:*"
   }
 }

@@ -4,6 +4,7 @@
   "private": true,
   "license": "MIT",
   "files": [
-    "vuejs.json"
+    "vuejs.json",
+    "server.json"
   ]
 }
