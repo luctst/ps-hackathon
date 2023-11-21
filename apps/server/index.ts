@@ -8,7 +8,7 @@ const BASE_URL = 'https://api-m.sandbox.paypal.com';
 const PARTNER_ID = 'AcG9tUFUS4-MEUvw0QU1Qeicds-pn0GJy27nLHwbrGJPtX1GSRjMxLPKrqY_Oo5VfshkHr2Tdx7ZNEpn';
 const PARTNER_BN_CODE = 'PrestaShop_Cart_PSXO_Testing';
 const MERCHANT_ID = 'WGB2BUWE22BZE';
-const CLIENT_TOKEN = '';
+const CLIENT_TOKEN = 'A21AALIy80GgqtUfBSOTiCOljk7AntM3BpI1eyTaRBN9CtjehzvFpZj51yTNkGbILi5W9L30UwfVW1V-LP0vvi73ifX3oLIKQ';
 
 const appRouter = router({
     createOrder: publicProcedure
@@ -116,7 +116,7 @@ const appRouter = router({
             throw new Error(`Invalid input: ${typeof orderId}`);
         })
         .query(async (opts: any) => {
-            const { orderId } = opts;
+            const orderId = opts.input;
             const URL = `${BASE_URL}/v2/checkout/orders/${orderId}/capture`;
 
             const correlationId = v4();
