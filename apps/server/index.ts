@@ -1,5 +1,6 @@
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
 import { z } from 'zod';
+import cors from 'cors';
 // import { db } from './db';
 import { publicProcedure, router } from './trpc';
 
@@ -24,10 +25,11 @@ const appRouter = router({
  
 // Export type router type signature,
 // NOT the router itself.
-// export type AppRouter = typeof appRouter;
+export type AppRouter = typeof appRouter;
 
 const server = createHTTPServer({
   router: appRouter,
+  middleware: cors(),
 });
 
-server.listen(3000);
+server.listen(4000);
