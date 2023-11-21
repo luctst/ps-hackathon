@@ -1,7 +1,5 @@
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
-import { z } from 'zod';
 import cors from 'cors';
-// import { db } from './db';
 import { publicProcedure, router } from './trpc';
 import { v4 } from 'uuid';
 
