@@ -1,13 +1,9 @@
-<script>
-import Cart from "../components/Cart.vue"
-import PayPalCheckoutButton from "../components/PayPalCheckoutButton.vue";
-import BillingAddress from "../components/BillingAddress.vue";
-import Card from "../components/Card.vue";
+<script setup lang="ts">
+type Props = {
+  paypal: unknown;
+};
 
-export default {
-  name: "CheckoutView.vue",
-  components: {Card, BillingAddress, PayPalCheckoutButton, Cart}
-}
+defineProps<Props>();
 </script>
 
 <template>

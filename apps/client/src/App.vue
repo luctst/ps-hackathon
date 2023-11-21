@@ -1,4 +1,5 @@
-<script>
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import CheckoutView from "./views/CheckoutView.vue";
 import { loadScript } from "@paypal/paypal-js";
 
@@ -6,25 +7,26 @@ const CLIENT_ID = 'AcG9tUFUS4-MEUvw0QU1Qeicds-pn0GJy27nLHwbrGJPtX1GSRjMxLPKrqY_O
 const MERCHANT_ID = 'WGB2BUWE22BZE';
 const PARTNER_ATTRIBUTION_ID = 'PrestaShop_Cart_PSXO_Testing';
 
-let paypal;
 
-try {
-  paypal = await loadScript({
-    clientId: CLIENT_ID,
-    merchantId: MERCHANT_ID,
-    dataPartnerAttributionId: PARTNER_ATTRIBUTION_ID,
-  });
-} catch (error) {
-  console.error("failed to load the PayPal JS SDK script", error);
-}
+const paypal = ref<null>();
+const isSdkLoaded = ref<boolean>(false);
 
-export default {
-  components: {CheckoutView}
-}
+onMounted(async () => {
+  try {
+    paypal.value = await loadScript({
+      clientId: CLIENT_ID,
+      merchantId: MERCHANT_ID,
+      dataPartnerAttributionId: PARTNER_ATTRIBUTION_ID,
+    });
+    isSdkLoaded.value = true;
+  } catch (error) {
+    console.error("failed to load the PayPal JS SDK script", error);
+  }
+});
 </script>
 
 <template>
   <main>
-    <CheckoutView />
+    <CheckoutView v-if="isSdkLoaded" :paypal="paypal"/>
   </main>
 </template>
