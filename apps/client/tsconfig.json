@@ -1,0 +1,10 @@
+{
+  "extends": "tsconfig/client.json",
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue", "vitest.config.ts", "init-unit-testing.ts"],
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}

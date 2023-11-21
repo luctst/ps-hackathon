@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "name": "ps-hackathon",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "pnpm run --filter './apps/*' --if-present -r dev",
+    "lint": "pnpm run --filter './apps/*' --if-present -r lint",
+    "typecheck": "pnpm run --filter './apps/*' --if-present -r typecheck",
+    "prepare": "husky install .husky"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.6",
+    "@commitlint/config-conventional": "^17.6.6",
+    "@turbo/gen": "^1.9.7",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
+    "prettier": "^3.0.0",
+    "turbo": "latest"
+  },
+  "packageManager": "pnpm@7.15.0"
+}
