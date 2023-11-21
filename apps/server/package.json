@@ -10,9 +10,9 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@trpc/client": "^10.43.7",
     "@trpc/server": "^10.43.7",
     "cors": "^2.8.5",
+    "uuid": "^9.0.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
