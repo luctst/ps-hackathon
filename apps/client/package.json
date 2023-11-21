@@ -12,7 +12,8 @@
     "@trpc/client": "^10.43.7",
     "@trpc/server": "^10.43.7",
     "server": "workspace:^",
-    "vue": "^3.3.8"
+    "vue": "^3.3.8",
+    "@paypal/paypal-js": "^7.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.0",
