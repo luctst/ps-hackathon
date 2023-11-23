@@ -76,6 +76,22 @@ const submitCardFields = () => {
         // submit successful
       });
 };
+
+const triggerConfetti = (confettiInstace: unknown) => {
+  let isConfettiInstaceStarted = 0;
+  confettiInstace.start();
+
+  const stopInterval = setInterval(() => {
+    if (isConfettiInstaceStarted === 2) {
+      confettiInstace.stop();
+      clearInterval(stopInterval);
+      return;
+    };
+
+    isConfettiInstaceStarted += 1;
+  }, 1000);
+};
+const options = {};
 </script>
 
 <template>
@@ -91,5 +107,10 @@ const submitCardFields = () => {
       </div>
     </div>
     <button id="card-field-submit-button" type="button" class="btn" @click="submitCardFields">Pay now with Card Fields</button>
+  </div>
+
+  <label for="discount">Discount</label>
+  <div class="text-center">
+    <input type="button" id="discount" @click="triggerConfetti($confetti)" value="Add a discount">
   </div>
 </template>
