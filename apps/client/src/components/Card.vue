@@ -1,7 +1,9 @@
-<script>
-export default {
-  name: "Card"
-}
+<script setup lang="ts">
+type Props = {
+  paypal: unknown;
+};
+
+const props = defineProps<Props>();
 </script>
 
 <template>

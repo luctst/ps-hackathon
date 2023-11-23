@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import Card from "../components/Card.vue";
+import PayPalCheckoutButton from "../components/PayPalCheckoutButton.vue";
+
 type Props = {
   paypal: unknown;
 };
@@ -13,15 +16,12 @@ defineProps<Props>();
         <form>
           <div class="row">
             <div class="col-50">
-              <BillingAddress/>
-            </div>
-            <div class="col-50">
-              <Card/>
+              <Card :paypal="paypal"/>
             </div>
           </div>
           <input type="submit" value="Continue to checkout" class="btn">
           <div class="text-center">Or</div>
-          <PayPalCheckoutButton />
+          <PayPalCheckoutButton :paypal="paypal" />
         </form>
       </div>
     </div>
