@@ -76,6 +76,8 @@ const submitCardFields = () => {
         // submit successful
       });
 };
+
+const options = {};
 </script>
 
 <template>
@@ -91,5 +93,10 @@ const submitCardFields = () => {
       </div>
     </div>
     <button id="card-field-submit-button" type="button" class="btn" @click="submitCardFields">Pay now with Card Fields</button>
+  </div>
+
+  <label for="discount">Discount</label>
+  <div class="text-center">
+    <input type="button" id="discount" @click="$confetti.start(options)" value="Add a discount">
   </div>
 </template>
