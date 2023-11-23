@@ -1,54 +1,29 @@
 <script setup lang="ts">
-import trpc from "../trpc.ts";
-import {PayPalNamespace} from "@paypal/paypal-js";
-import { toast, type ToastOptions } from 'vue3-toastify';
-
+import { PayPalNamespace } from "@paypal/paypal-js";
 
 type Props = {
-  paypal: PayPalNamespace;
+  paypal: PayPalNamespace | null;
+  createOrder: () => Promise<any>;
+  onApprove: (data: any) => Promise<any>;
 };
-
-const notify = (message: string, type: string) => {
-  toast(message, {
-    type,
-    autoClose: 4000,
-    position: toast.POSITION.BOTTOM_RIGHT,
-  } as ToastOptions);
-}
-
 
 const props = defineProps<Props>();
 
-const createPayPalOrder = async () => {
-  const order = await trpc.createOrder.query();
-  console.log("Create Order Result", order);
-  return order;
-}
-
-const capturePayPalOrder = async (orderId: string) => {
-  const order = await trpc.captureOrder.query(orderId);
-  console.log("Capture Order Result", order);
-  return order;
-}
-
 if (props.paypal && props.paypal.Buttons) {
-  props.paypal.Buttons({
-    fundingSource: props.paypal?.FUNDING?.PAYPAL,
-    createOrder: async () => {
-      let orderData = await createPayPalOrder();
-      console.log("Create Order Result", orderData);
-      return orderData.id;
-    },
-    onApprove: async (data: any) => {
-      try {
-        let orderData = await capturePayPalOrder(data.orderID);
-        notify(orderData.purchase_units[0].payments.captures[0].status, 'success');
-      } catch(error) {
-        notify(error.message, 'error');
-      }
-    }
-  })
-      .render("#paypal-button-container");
+  props.paypal
+    .Buttons({
+      fundingSource: props.paypal?.FUNDING?.PAYPAL,
+      createOrder: () => {
+        return props.createOrder();
+      },
+      onApprove: (data: any) => {
+        return props.onApprove(data.orderID);
+      },
+    })
+    .render("#paypal-button-container")
+    .catch((error: any) => {
+      console.error(error);
+    });
 }
 </script>
 
