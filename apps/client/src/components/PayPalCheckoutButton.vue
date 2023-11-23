@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import trpc from "../trpc.ts";
+import {PayPalNamespace} from "@paypal/paypal-js";
 
 type Props = {
-  paypal: unknown;
+  paypal: PayPalNamespace;
 };
 
 const props = defineProps<Props>();
@@ -15,27 +16,26 @@ const createPayPalOrder = async () => {
 
 const capturePayPalOrder = async (orderId: string) => {
   const order = await trpc.captureOrder.query(orderId);
+  console.log("Capture Order Result", order);
   return order;
 }
 
-props.paypal.Buttons({
-  createOrder: () => {
-    return createPayPalOrder()
-        .then((orderData) => {
-          console.log("Create Order Result", orderData);
-          return orderData.id;
-        });
-  },
-  onApprove: (data) => {
-    console.log("Approve result", data);
-    return capturePayPalOrder(data.orderID)
-        .then((orderData) => {
-          console.log("Capture result", orderData);
-          var transaction = orderData.purchase_units[0].payments.captures[0];
-        });
-  }
-})
-    .render("#paypal-button-container");
+if (props.paypal && props.paypal.Buttons) {
+  props.paypal.Buttons({
+    fundingSource: props.paypal?.FUNDING?.PAYPAL,
+    createOrder: async () => {
+      let orderData = await createPayPalOrder();
+      console.log("Create Order Result", orderData);
+      return orderData.id;
+    },
+    onApprove: async (data: any) => {
+      console.log("Approve result", data);
+      let orderData = await capturePayPalOrder(data.orderID);
+      console.log("Capture result", orderData);
+    }
+  })
+      .render("#paypal-button-container");
+}
 </script>
 
 <template>

@@ -15,10 +15,7 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "Cart.vue"
-}
+<script setup lang="ts">
 </script>
 
 <style scoped>
