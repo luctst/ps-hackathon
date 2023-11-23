@@ -77,6 +77,20 @@ const submitCardFields = () => {
       });
 };
 
+const triggerConfetti = (confettiInstace: unknown) => {
+  let isConfettiInstaceStarted = 0;
+  confettiInstace.start();
+
+  const stopInterval = setInterval(() => {
+    if (isConfettiInstaceStarted === 2) {
+      confettiInstace.stop();
+      clearInterval(stopInterval);
+      return;
+    };
+
+    isConfettiInstaceStarted += 1;
+  }, 1000);
+};
 const options = {};
 </script>
 
@@ -97,6 +111,6 @@ const options = {};
 
   <label for="discount">Discount</label>
   <div class="text-center">
-    <input type="button" id="discount" @click="$confetti.start(options)" value="Add a discount">
+    <input type="button" id="discount" @click="triggerConfetti($confetti)" value="Add a discount">
   </div>
 </template>

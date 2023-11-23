@@ -54,6 +54,9 @@ importers:
       vue-confetti:
         specifier: ^2.3.0
         version: 2.3.0
+      vue3-toastify:
+        specifier: ^0.1.14
+        version: 0.1.14(vue@3.3.8)
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^4.5.0
