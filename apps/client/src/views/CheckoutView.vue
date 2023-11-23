@@ -5,12 +5,15 @@ import { toast, type ToastOptions } from "vue3-toastify";
 import Card from "../components/Card.vue";
 import Cart from "../components/Cart.vue";
 import PayPalCheckoutButton from "../components/PayPalCheckoutButton.vue";
+import { ref } from "vue";
 
 type Props = {
   paypal: PayPalNamespace | null;
 };
 
 defineProps<Props>();
+
+let discount = ref("");
 
 const notify = (message: string, options: any) => {
   toast(message, {
@@ -64,13 +67,24 @@ const capturePayPalOrder = async (orderId: string) => {
   }
 };
 
-const triggerConfetti = (confettiInstace: unknown) => {
+const triggerConfetti = (confettiInstance: unknown) => {
   let isConfettiInstaceStarted = 0;
-  confettiInstace.start();
+  const options = discount.value.includes("$")
+    ? {
+        particles: [
+          {
+            type: "image",
+            size: 30,
+            url: "http://localhost:5173/logo.png",
+          },
+        ],
+      }
+    : {};
+  confettiInstance.start(options);
 
   const stopInterval = setInterval(() => {
     if (isConfettiInstaceStarted === 2) {
-      confettiInstace.stop();
+      confettiInstance.stop();
       clearInterval(stopInterval);
       return;
     }
@@ -78,7 +92,6 @@ const triggerConfetti = (confettiInstace: unknown) => {
     isConfettiInstaceStarted += 1;
   }, 1000);
 };
-const options = {};
 </script>
 
 <template>
@@ -105,10 +118,17 @@ const options = {};
       <Cart />
       <div class="text-center">
         <input
+          type="text"
+          id="discount"
+          placeholder="Discount code"
+          v-model="discount"
+        />
+        <input
           type="button"
           id="discount"
           @click="triggerConfetti($confetti)"
           value="Add a discount"
+          :disabled="!discount"
         />
       </div>
     </div>

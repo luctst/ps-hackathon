@@ -1,23 +1,57 @@
 <template>
   <div class="container">
-    <h4>Cart
-      <span class="price" style="color:black">
-          <i class="fa fa-shopping-cart"></i>
-          <b>4</b>
-        </span>
-    </h4>
-    <p><a href="#">Product 1</a> <span class="price">$15</span></p>
-    <p><a href="#">Product 2</a> <span class="price">$5</span></p>
-    <p><a href="#">Product 3</a> <span class="price">$8</span></p>
-    <p><a href="#">Product 4</a> <span class="price">$2</span></p>
-    <hr>
-    <p>Total <span class="price" style="color:black"><b>$30</b></span></p>
+    <div class="order-summary">
+      <table class="order-item">
+        <tr class="order-summary-item-name">
+          <td class="order-summary-td-label">Name:</td>
+          <td class="order-summary-td-value">T-Shirt</td>
+        </tr>
+        <tr class="order-summary-item-sku">
+          <td class="order-summary-td-label">SKU:</td>
+          <td class="order-summary-td-value">TA1000</td>
+        </tr>
+        <tr class="order-summary-item-description">
+          <td class="order-summary-td-label">Description:</td>
+          <td class="order-summary-td-value">Green XL</td>
+        </tr>
+        <tr class="order-summary-item-quantity">
+          <td class="order-summary-td-label">Quantity:</td>
+          <td class="order-summary-td-value">1</td>
+        </tr>
+        <tr class="order-summary-item-price">
+          <td class="order-summary-td-label">Price:</td>
+          <td class="order-summary-td-value">100.00 USD</td>
+        </tr>
+      </table>
+      <hr />
+      <table class="order-summary-totals">
+        <tr class="order-summary-totals-total">
+          <td class="order-summary-td-label">Total:</td>
+          <td class="order-summary-td-value">100.00 USD</td>
+        </tr>
+      </table>
+    </div>
   </div>
 </template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
+.order-summary {
+  width: 100%;
+  text-align: left;
 
+  .order-item,
+  .order-summary-totals {
+    width: 100%;
+  }
+
+  .order-summary-td-label {
+    text-align: left;
+  }
+
+  .order-summary-td-value {
+    text-align: right;
+  }
+}
 </style>
