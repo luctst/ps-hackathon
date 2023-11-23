@@ -8,7 +8,7 @@ const BASE_URL = 'https://api-m.sandbox.paypal.com';
 const PARTNER_ID = 'AcG9tUFUS4-MEUvw0QU1Qeicds-pn0GJy27nLHwbrGJPtX1GSRjMxLPKrqY_Oo5VfshkHr2Tdx7ZNEpn';
 const PARTNER_BN_CODE = 'PrestaShop_Cart_PSXO_Testing';
 const MERCHANT_ID = 'WGB2BUWE22BZE';
-const CLIENT_TOKEN = 'A21AALIy80GgqtUfBSOTiCOljk7AntM3BpI1eyTaRBN9CtjehzvFpZj51yTNkGbILi5W9L30UwfVW1V-LP0vvi73ifX3oLIKQ';
+const CLIENT_TOKEN = 'A21AAK1HB9gj_EFwthca9--a5o0dpDcd0TW8z9_50csctz2YUZz9Rv5mgyu66MLPN8oegARI_sfkHvjj3g52X08G3pXWTit_A';
 
 const appRouter = router({
     createOrder: publicProcedure
