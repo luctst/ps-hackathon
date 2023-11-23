@@ -1,10 +1,21 @@
 <script setup lang="ts">
 import trpc from "../trpc.ts";
 import {PayPalNamespace} from "@paypal/paypal-js";
+import { toast, type ToastOptions } from 'vue3-toastify';
+
 
 type Props = {
   paypal: PayPalNamespace;
 };
+
+const notify = (message: string, type: string) => {
+  toast(message, {
+    type,
+    autoClose: 4000,
+    position: toast.POSITION.BOTTOM_RIGHT,
+  } as ToastOptions);
+}
+
 
 const props = defineProps<Props>();
 
@@ -29,9 +40,12 @@ if (props.paypal && props.paypal.Buttons) {
       return orderData.id;
     },
     onApprove: async (data: any) => {
-      console.log("Approve result", data);
-      let orderData = await capturePayPalOrder(data.orderID);
-      console.log("Capture result", orderData);
+      try {
+        let orderData = await capturePayPalOrder(data.orderID);
+        notify(orderData.purchase_units[0].payments.captures[0].status, 'success');
+      } catch(error) {
+        notify(error.message, 'error');
+      }
     }
   })
       .render("#paypal-button-container");
