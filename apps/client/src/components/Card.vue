@@ -1,68 +1,51 @@
 <script setup lang="ts">
-import trpc from "../trpc.ts";
-import {PayPalNamespace} from "@paypal/paypal-js";
-import { toast, type ToastOptions } from 'vue3-toastify';
+import { PayPalNamespace } from "@paypal/paypal-js";
+import { ref } from "vue";
 
 type Props = {
-  paypal: PayPalNamespace;
+  paypal: PayPalNamespace | null;
+  createOrder: () => Promise<any>;
+  onApprove: (data: any) => Promise<any>;
 };
 
 const props = defineProps<Props>();
 
-const notify = (message: string, type: string) => {
-  toast(message, {
-    type,
-    autoClose: 1000,
-    position: toast.POSITION.BOTTOM_RIGHT,
-  } as ToastOptions);
-}
-
-const createPayPalOrder = async () => {
-  const order = await trpc.createOrder.query();
-  console.log("Create Order Result", order);
-  return order;
-}
-
-const capturePayPalOrder = async (orderId: string) => {
-  const order = await trpc.captureOrder.query(orderId);
-  console.log("Capture Order Result", order);
-  return order;
-}
-
 let cardField: any;
-let cardFieldIsEligible = false;
+let cardFieldIsEligible = ref(false);
+let cardFieldsSubmitted = ref(false);
 
 if (props.paypal && props.paypal.CardFields) {
   cardField = props.paypal.CardFields({
-    createOrder: async () => {
-      let orderData = await createPayPalOrder();
-      console.log("Create Order Result", orderData);
-      return orderData.id;
+    createOrder: () => {
+      return props.createOrder();
     },
-    onApprove: async (data: any) => {
-      try {
-        let orderData = await capturePayPalOrder(data.orderID);
-        notify(orderData.purchase_units[0].payments.captures[0].status, 'success');
-      } catch(error) {
-        notify(error.message, 'error');
-      }
-    }
+    onApprove: (data: any) => {
+      return props.onApprove(data.orderID);
+    },
   });
 
-  cardFieldIsEligible = cardField.isEligible();
+  cardFieldIsEligible.value = cardField.isEligible();
 
   if (cardFieldIsEligible) {
     const nameField = cardField.NameField();
-    nameField.render('#card-name-field-container');
+    nameField.render("#card-name-field-container").catch((error: any) => {
+      console.error(error);
+    });
 
     const numberField = cardField.NumberField();
-    numberField.render('#card-number-field-container');
+    numberField.render("#card-number-field-container").catch((error: any) => {
+      console.error(error);
+    });
 
     const cvvField = cardField.CVVField();
-    cvvField.render('#card-cvv-field-container');
+    cvvField.render("#card-cvv-field-container").catch((error: any) => {
+      console.error(error);
+    });
 
     const expiryField = cardField.ExpiryField();
-    expiryField.render('#card-expiry-field-container');
+    expiryField.render("#card-expiry-field-container").catch((error: any) => {
+      console.error(error);
+    });
   }
 }
 
@@ -70,28 +53,17 @@ const submitCardFields = () => {
   if (!cardField || !cardFieldIsEligible) {
     return;
   }
+  cardFieldsSubmitted.value = true;
   cardField
-      .submit()
-      .then(() => {
-        // submit successful
-      });
+    .submit()
+    .then(() => {
+      cardFieldsSubmitted.value = false;
+    })
+    .catch((error: any) => {
+      console.error(error);
+      cardFieldsSubmitted.value = false;
+    });
 };
-
-const triggerConfetti = (confettiInstace: unknown) => {
-  let isConfettiInstaceStarted = 0;
-  confettiInstace.start();
-
-  const stopInterval = setInterval(() => {
-    if (isConfettiInstaceStarted === 2) {
-      confettiInstace.stop();
-      clearInterval(stopInterval);
-      return;
-    };
-
-    isConfettiInstaceStarted += 1;
-  }, 1000);
-};
-const options = {};
 </script>
 
 <template>
@@ -106,11 +78,14 @@ const options = {};
         <div id="card-cvv-field-container"></div>
       </div>
     </div>
-    <button id="card-field-submit-button" type="button" class="btn" @click="submitCardFields">Pay now with Card Fields</button>
-  </div>
-
-  <label for="discount">Discount</label>
-  <div class="text-center">
-    <input type="button" id="discount" @click="triggerConfetti($confetti)" value="Add a discount">
+    <button
+      id="card-field-submit-button"
+      type="button"
+      class="btn"
+      @click="submitCardFields"
+      :disabled="cardFieldsSubmitted"
+    >
+      Pay now with Card Fields
+    </button>
   </div>
 </template>
